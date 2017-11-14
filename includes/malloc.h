@@ -11,6 +11,7 @@ typedef struct		s_memory
 	size_t			size;
 	int				free;
 	int 			id;
+	void			*data;
 	struct s_memory	*next;
 }					t_memory;
 

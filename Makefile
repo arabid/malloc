@@ -26,7 +26,6 @@ $(NAME): $(OBJECTS)
 	@gcc $(DLFLAGS) -o $@ $(OBJECTS)
 	@rm -f libft_malloc.so
 	@ln -s $(NAME) libft_malloc.so
-	@echo libft_malloc.so now link to $(NAME)
 
 $(PATH_OBJ)/%.o: $(addprefix $(PATH_SRC)/,%.c)
 	@mkdir -p $(PATH_OBJ)

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "malloc.h"
+#include "../includes/malloc.h"
 
 void		erase_map(t_memory *memory, size_t size)
 {
@@ -43,8 +43,13 @@ void		free(void *ptr)
 	extern t_index		g_index_memory;
 	t_memory			*memory;
 
+	if (!ptr)
+		return ;
 	memory = (t_memory *)(ptr - sizeof(t_memory));
+	if (memory->data != ptr)
+		return ;
 	memory->free = 1;
+	bzero(ptr, memory->size);
 	if (memory->id == 3)
 	{
 		unlink_memory(&g_index_memory.large, memory);

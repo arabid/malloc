@@ -10,12 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "malloc.h"
+#include "../includes/malloc.h"
 
 t_index g_index_memory;
 
 
-void			*ft_get_memory(t_memory *memory, int size, int id)
+void			*ft_get_memory(t_memory *memory, int size)
 {
 	void	*ret;
 	int		i;
@@ -29,7 +29,6 @@ void			*ft_get_memory(t_memory *memory, int size, int id)
 		{
 			memory->free = 0;
 			memory->size = size;
-			memory->id = id;
 			break ;
 		}
 		memory = memory->next;
@@ -37,7 +36,7 @@ void			*ft_get_memory(t_memory *memory, int size, int id)
 	return (void *)memory;
 }
 
-void			hash_memory(void *map, size_t length)
+void			hash_memory(void *map, size_t length, int id)
 {
 	int			i;
 	t_memory	*memory;
@@ -50,6 +49,8 @@ void			hash_memory(void *map, size_t length)
 	{
 		memory->size = length;
 		memory->free = 1;
+		memory->data = (void*)memory + sizeof(t_memory);
+		memory->id = id;
 		if (i < NB_BY_MAP - 1)
 		{
 			memory->next = (t_memory *)(map + i *\
@@ -88,6 +89,7 @@ void			initialize_memory(t_memory *memory, size_t size, int id)
 	memory->free = 0;
 	memory->size = size;
 	memory->id = id;
+	memory->data = (void *)memory + sizeof(t_memory);
 }
 
 void			associate_new_map(t_memory *memory, void *map)
@@ -112,10 +114,10 @@ void			*ft_memory_return(t_identifier identifier, size_t size)
 	else
 	{
 		map = identifier.id == 1 ? &g_index_memory.tiny : &g_index_memory.small;
-		if (*map && (ret = ft_get_memory(*map, size, identifier.id)))
+		if (*map && (ret = ft_get_memory(*map, size)))
 			return (ret);
 		ret = create_map((identifier.size + sizeof(t_memory)) * 100);
-		hash_memory(ret, identifier.size);
+		hash_memory(ret, identifier.size, identifier.id);
 	}
 	if (*map)
 		associate_new_map(*map, ret);

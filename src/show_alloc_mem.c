@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "malloc.h"
+#include "../includes/malloc.h"
 
 size_t	ft_show_memory(void *map) {
 	t_memory 	*memory;
@@ -23,7 +23,7 @@ size_t	ft_show_memory(void *map) {
 	printf("%p\n", memory);
 	while (memory) {
 		if (memory->free == 0) {
-			//printf("%p - %p : %zu octets\n", (void *)memory + sizeof(t_memory), (void *)memory + sizeof(t_memory) + memory->size, memory->size);
+			printf("%p - %p : %zu octets\n", (void *)memory + sizeof(t_memory), (void *)memory + sizeof(t_memory) + memory->size, memory->size);
 			total += memory->size;
 		}
 		memory = memory->next;
