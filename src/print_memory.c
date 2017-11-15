@@ -12,47 +12,62 @@
 
 #include "../includes/malloc.h"
 
-void	*ft_cpy(void *dst, const void *src, size_t n)
+void		reverse_mem(char *str)
 {
-	size_t i;
+	int		i;
+	int		j;
+	char	c;
 
 	i = 0;
-	while (i < n)
+	j = (ft_strlen(str) - 1);
+	while (j > i)
 	{
-		((char *)dst)[i] = ((char *)src)[i];
+		c = str[j];
+		str[j] = str[i];
+		str[i] = c;
 		i++;
+		j--;
 	}
-	return (dst);
 }
 
-void			*realloc(void *ptr, size_t size)
+void	number_assign_hexa_ll(char *str, size_t n)
 {
-	void			*ret;
-	t_identifier 	info_new;
-	t_memory		*memory;
+	char c;
+	int i;
 
+	i = 0;
+	while ((n / 16) >= 1)
+	{
+		c = '0';
+		if ((n % 16) >= 10 && 16 > 10)
+			c = 'a' - 10;
+		str[i] = ((n % 16) + c);
+		n = (n / 16);
+		i++;
+	}
+	c = '0';
+	if (n >= 10 && 16 > 10)
+		c = 'a' - 10;
+	str[i] = (n + c);
+	str[++i] = '\0';
+	reverse_mem(str);
+}
 
-	if (!ptr)
-	{
-		return (malloc(size));
-	}
-	if (!size)
-		return (NULL);
-	memory = ptr - sizeof(t_memory);
-	if (memory->data != ptr)
-		return NULL;
-	info_new = ft_check_size(size);
-	if ((info_new.id == 3 && memory->size < size) || info_new.id != memory->id)
-	{
-		ret = malloc(size);
-		//printf("ID DU REALLOC = %d\n", memory->id);
-		ft_cpy(ret, ptr, memory->size);
-		free(ptr);
-	}
-	else
-	{
-		memory->size = size;
-		ret = ptr;
-	}
-	return (ret);
+void		print_addr(void *ptr)
+{
+	char	buff[16];
+
+	number_assign_hexa_ll(buff, (size_t)ptr);
+	ft_putstr("0x");
+	ft_putstr(buff);
+}
+
+void	ft_print_memory(t_memory *memory) 
+{
+	print_addr((void *)memory + sizeof(t_memory));
+	ft_putstr(" - ");
+	print_addr((void *)memory + sizeof(t_memory) + memory->size);
+	ft_putstr(" : ");
+	ft_putnbr(memory->size);
+	ft_putstr(" octets\n");
 }

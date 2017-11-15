@@ -38,6 +38,30 @@ void		unlink_memory(t_memory **memory, t_memory *old)
 	}
 }
 
+t_memory		*check_valid_memory(void *ptr, t_memory *map)
+{	
+	while (map) 
+	{
+		if (ptr == map->data)
+			break ;
+		map = map->next;
+	}
+	return (map);
+}
+
+int			memory_check(void *ptr)
+{
+	extern t_index		g_index_memory;
+
+	if (check_valid_memory(ptr, g_index_memory.tiny))
+		return (1);
+	if (check_valid_memory(ptr, g_index_memory.small))
+		return (1);
+	if (check_valid_memory(ptr, g_index_memory.large))
+		return (1);
+	return (0);
+}
+
 void		free(void *ptr)
 {
 	extern t_index		g_index_memory;
@@ -46,10 +70,10 @@ void		free(void *ptr)
 	if (!ptr)
 		return ;
 	memory = (t_memory *)(ptr - sizeof(t_memory));
-	if (memory->data != ptr)
+	if (memory_check(ptr) == 0) {
 		return ;
+	}
 	memory->free = 1;
-	bzero(ptr, memory->size);
 	if (memory->id == 3)
 	{
 		unlink_memory(&g_index_memory.large, memory);

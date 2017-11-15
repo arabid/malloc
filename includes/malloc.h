@@ -1,7 +1,10 @@
 #ifndef MALLOC_H
 # define MALLOC_H
-# include "../libft/libft.h"
 # include <sys/mman.h>
+# include <stdlib.h>
+# include <string.h>
+# include <stdio.h>
+# include <unistd.h>
 # define TINY 1024 
 # define SMALL 4096
 # define NB_BY_MAP 100
@@ -35,5 +38,8 @@ void			free(void *ptr);
 void			*malloc(size_t size);
 void			*realloc(void *ptr, size_t size);
 void 			show_alloc_mem();
-
+size_t			ft_strlen(const char *str);
+void			ft_putstr(char const *s);
+void			ft_print_memory(t_memory *memory);
+void			ft_putnbr(size_t n);
 #endif

@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "../includes/malloc.h"
+
 int main()
 {
 int i;

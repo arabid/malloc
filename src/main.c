@@ -15,24 +15,48 @@
 t_index g_index_memory;
 
 
-void			*ft_get_memory(t_memory *memory, int size)
+void			initialize_memory(t_memory *memory, size_t size, int id)
+{
+	if (!memory)
+		return ;
+	memory->next = NULL;
+	memory->free = 0;
+	memory->size = size;
+	memory->id = id;
+	memory->data = (void *)memory + sizeof(t_memory);
+}
+
+
+void			*ft_get_memory(t_memory *memory, int size, t_identifier identifier)
 {
 	void	*ret;
 	int		i;
 
-	i = 0;
+	i = 1;
 	ret = NULL;
 	while (memory)
 	{
-		++i;
 		if (memory->free)
 		{
 			memory->free = 0;
 			memory->size = size;
 			break ;
 		}
+		if (!memory->next) {
+			if (!memory->free && i % NB_BY_MAP != 0)
+			{
+				//printf("Ecriture sur la page %lu\n", (i * (identifier.size + sizeof(t_memory))) / getpagesize() + 1);
+				memory->next = (void*)memory + identifier.size + sizeof(t_memory);
+				initialize_memory(memory->next, size, identifier.id);
+			}
+			else
+				return NULL;
+			break ;
+		}
 		memory = memory->next;
+		++i;
 	}
+	//printf("%d\n", i);
 	return (void *)memory;
 }
 
@@ -75,22 +99,13 @@ void			*create_map(size_t size)
 	(size / getpagesize() * getpagesize() + getpagesize());
 	ret = mmap(0, mod_size, PROT_READ | PROT_WRITE,\
 				MAP_ANON | MAP_PRIVATE, -1, 0);
+	//printf("%zu PAGES DEMANDEES\n", mod_size / getpagesize());
 	if (ret == MAP_FAILED) {
-		printf("MALLOC ERROR\n");
 		return NULL;
 	}
 	return (ret);
 }
 
-void			initialize_memory(t_memory *memory, size_t size, int id)
-{
-	if (!memory)
-		return ;
-	memory->free = 0;
-	memory->size = size;
-	memory->id = id;
-	memory->data = (void *)memory + sizeof(t_memory);
-}
 
 void			associate_new_map(t_memory *memory, void *map)
 {
@@ -114,12 +129,12 @@ void			*ft_memory_return(t_identifier identifier, size_t size)
 	else
 	{
 		map = identifier.id == 1 ? &g_index_memory.tiny : &g_index_memory.small;
-		if (*map && (ret = ft_get_memory(*map, size)))
+		if (*map && (ret = ft_get_memory(*map, size, identifier)))
 			return (ret);
 		ret = create_map((identifier.size + sizeof(t_memory)) * 100);
-		hash_memory(ret, identifier.size, identifier.id);
+		//hash_memory(ret, identifier.size, identifier.id);
 	}
-	if (*map)
+	if (*map) 
 		associate_new_map(*map, ret);
 	else
 		*map = (t_memory *)ret;

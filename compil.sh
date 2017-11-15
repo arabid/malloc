@@ -1,1 +1,2 @@
-gcc ./src/*.c ./tests/test0.c
+gcc ./src/*.c ./tests/test9.c
+./a.out

@@ -12,47 +12,21 @@
 
 #include "../includes/malloc.h"
 
-void	*ft_cpy(void *dst, const void *src, size_t n)
+void	ft_putchar(char c)
 {
-	size_t i;
-
-	i = 0;
-	while (i < n)
-	{
-		((char *)dst)[i] = ((char *)src)[i];
-		i++;
-	}
-	return (dst);
+	write(1, &c, 1);
 }
 
-void			*realloc(void *ptr, size_t size)
+
+void	ft_putnbr(size_t n)
 {
-	void			*ret;
-	t_identifier 	info_new;
-	t_memory		*memory;
-
-
-	if (!ptr)
+	if (n > 9)
 	{
-		return (malloc(size));
-	}
-	if (!size)
-		return (NULL);
-	memory = ptr - sizeof(t_memory);
-	if (memory->data != ptr)
-		return NULL;
-	info_new = ft_check_size(size);
-	if ((info_new.id == 3 && memory->size < size) || info_new.id != memory->id)
-	{
-		ret = malloc(size);
-		//printf("ID DU REALLOC = %d\n", memory->id);
-		ft_cpy(ret, ptr, memory->size);
-		free(ptr);
+			ft_putnbr(n / 10);
+			ft_putnbr(n % 10);
 	}
 	else
 	{
-		memory->size = size;
-		ret = ptr;
+		ft_putchar(n+'0');
 	}
-	return (ret);
 }
