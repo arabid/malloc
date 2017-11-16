@@ -3,7 +3,8 @@ ifeq ($(HOSTTYPE),)
 	HOSTTYPE := $(shell uname -m)_$(shell uname -s)
 endif
 
-SRC =	main.c\
+SRC =	memory.c\
+		identifier.c\
 		malloc.c\
 		show_alloc_mem.c\
 		free.c\
@@ -19,7 +20,7 @@ PATH_INC	= includes
 
 NAME		= libft_malloc_$(HOSTTYPE).so
 CFLAGS		= -Wall -Wextra -Werror
-DLFLAGS		= -shared -fPIC
+DLFLAGS		= -lpthread -shared -fPIC
 OBJECTS		= $(patsubst %.c, $(PATH_OBJ)/%.o, $(SRC))
 DEBUG		= -g -O0
 .PHONY: all

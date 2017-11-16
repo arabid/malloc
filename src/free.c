@@ -38,9 +38,9 @@ void		unlink_memory(t_memory **memory, t_memory *old)
 	}
 }
 
-t_memory		*check_valid_memory(void *ptr, t_memory *map)
-{	
-	while (map) 
+t_memory	*check_valid_memory(void *ptr, t_memory *map)
+{
+	while (map)
 	{
 		if (ptr == map->data)
 			break ;
@@ -67,10 +67,12 @@ void		free(void *ptr)
 	extern t_index		g_index_memory;
 	t_memory			*memory;
 
+	initialize();
 	if (!ptr)
 		return ;
 	memory = (t_memory *)(ptr - sizeof(t_memory));
-	if (memory_check(ptr) == 0) {
+	if (memory_check(ptr) == 0)
+	{
 		return ;
 	}
 	memory->free = 1;

@@ -12,12 +12,31 @@
 
 #include "../includes/malloc.h"
 
-void *malloc(size_t size) {
-	void			*ret;
-	t_identifier 	info;
+void	initialize(void)
+{
+	static	int			toggle = 0;
+	extern t_index		g_index_memory;
 
+	if (toggle == 0)
+	{
+		g_index_memory.tiny = NULL;
+		g_index_memory.small = NULL;
+		g_index_memory.large = NULL;
+		++toggle;
+	}
+}
+
+void	*malloc(size_t size)
+{
+	void			*ret;
+	t_identifier	info;
+	static	size_t	i = 0;
+
+	++i;
+	initialize();
 	info = ft_check_size(size);
-	if (info.id != 0) {
+	if (info.id != 0)
+	{
 		ret = ft_memory_return(info, size);
 	}
 	else
@@ -26,5 +45,5 @@ void *malloc(size_t size) {
 	{
 		return (NULL);
 	}
-	return ret + sizeof(t_memory);
+	return (ret + sizeof(t_memory));
 }

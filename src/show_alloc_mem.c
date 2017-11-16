@@ -12,42 +12,46 @@
 
 #include "../includes/malloc.h"
 
-
-size_t	ft_show_memory(void *map)
+size_t		ft_show_memory(void *map)
 {
-	t_memory 	*memory;
-	int i;
-	size_t total;
+	t_memory	*memory;
+	int			i;
+	size_t		total;
 
 	total = 0;
 	i = 0;
 	memory = (t_memory *)map;
-	while (memory) {
-		if (memory->free == 0) {
+	while (memory)
+	{
+		if (memory->free == 0)
+		{
 			ft_print_memory((void *)memory);
-			//printf("%p - %p : %zu octets\n", (void *)memory + sizeof(t_memory), (void *)memory + sizeof(t_memory) + memory->size, memory->size);
 			total += memory->size;
 		}
 		memory = memory->next;
 	}
-	return total;
+	return (total);
 }
 
-void show_alloc_mem() {
-	extern t_index g_index_memory;
-	size_t total;
+void		show_alloc_mem(void)
+{
+	extern t_index	g_index_memory;
+	size_t			total;
 
 	total = 0;
-	if (g_index_memory.tiny) {
-		ft_putstr("TINY : ");
+	if (g_index_memory.tiny)
+	{
+		ft_putstr("TINY : \n");
 		total += ft_show_memory(g_index_memory.tiny);
 	}
-	if (g_index_memory.small) {
-		ft_putstr("SMALL : ");
+	if (g_index_memory.small)
+	{
+		ft_putstr("SMALL : \n");
 		total += ft_show_memory(g_index_memory.small);
 	}
-	if (g_index_memory.large) {
-		ft_putstr("LARGE : ");
+	if (g_index_memory.large)
+	{
+		ft_putstr("LARGE : \n");
 		total += ft_show_memory(g_index_memory.large);
 	}
 	if (total)
@@ -55,7 +59,5 @@ void show_alloc_mem() {
 		ft_putstr("Total : ");
 		ft_putnbr(total);
 		ft_putstr(" octets\n");
-		//printf("Total : %zu octets\n", total);
 	}
 }
-

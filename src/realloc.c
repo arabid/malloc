@@ -12,7 +12,7 @@
 
 #include "../includes/malloc.h"
 
-void	*ft_cpy(void *dst, const void *src, size_t n)
+void			*ft_cpy(void *dst, const void *src, size_t n)
 {
 	size_t i;
 
@@ -28,24 +28,21 @@ void	*ft_cpy(void *dst, const void *src, size_t n)
 void			*realloc(void *ptr, size_t size)
 {
 	void			*ret;
-	t_identifier 	info_new;
+	t_identifier	info_new;
 	t_memory		*memory;
 
-
+	initialize();
 	if (!ptr)
-	{
 		return (malloc(size));
-	}
 	if (!size)
 		return (NULL);
 	memory = ptr - sizeof(t_memory);
-	if (memory->data != ptr)
-		return NULL;
+	if (memory_check(ptr) == 0)
+		return (NULL);
 	info_new = ft_check_size(size);
-	if ((info_new.id == 3 && memory->size < size) || info_new.id != memory->id)
+	if (info_new.id == 3 || info_new.id != memory->id)
 	{
 		ret = malloc(size);
-		//printf("ID DU REALLOC = %d\n", memory->id);
 		ft_cpy(ret, ptr, memory->size);
 		free(ptr);
 	}
