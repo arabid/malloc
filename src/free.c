@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/malloc.h"
+#include "malloc.h"
 
 void		erase_map(t_memory *memory, size_t size)
 {
@@ -40,12 +40,14 @@ void		unlink_memory(t_memory **memory, t_memory *old)
 
 t_memory	*check_valid_memory(void *ptr, t_memory *map)
 {
+	pthread_mutex_lock(&g_memory_mutex);
 	while (map)
 	{
 		if (ptr == map->data)
 			break ;
 		map = map->next;
 	}
+	pthread_mutex_unlock(&g_memory_mutex);
 	return (map);
 }
 
@@ -69,16 +71,20 @@ void		free(void *ptr)
 
 	initialize();
 	if (!ptr)
+	{
 		return ;
+	}
 	memory = (t_memory *)(ptr - sizeof(t_memory));
 	if (memory_check(ptr) == 0)
 	{
 		return ;
 	}
+	pthread_mutex_lock(&g_memory_mutex);
 	memory->free = 1;
 	if (memory->id == 3)
 	{
 		unlink_memory(&g_index_memory.large, memory);
 		erase_map(memory, memory->size + sizeof(t_memory));
 	}
+	pthread_mutex_unlock(&g_memory_mutex);
 }

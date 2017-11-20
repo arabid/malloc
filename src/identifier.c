@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/malloc.h"
+#include "malloc.h"
 
 t_identifier	*initialize_identifier(t_identifier *identifier,\
 									size_t id, size_t size)

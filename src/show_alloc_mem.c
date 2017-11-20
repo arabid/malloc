@@ -10,21 +10,22 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/malloc.h"
+#include "malloc.h"
 
-size_t		ft_show_memory(void *map)
+size_t		ft_show_memory(void *map, char *str)
 {
 	t_memory	*memory;
-	int			i;
 	size_t		total;
 
 	total = 0;
-	i = 0;
+	ft_putstr(str);
+	ft_putstr("\n");
 	memory = (t_memory *)map;
 	while (memory)
 	{
 		if (memory->free == 0)
 		{
+			ft_putstr("  ");
 			ft_print_memory((void *)memory);
 			total += memory->size;
 		}
@@ -38,26 +39,20 @@ void		show_alloc_mem(void)
 	extern t_index	g_index_memory;
 	size_t			total;
 
+	initialize();
+	pthread_mutex_lock(&g_memory_mutex);
 	total = 0;
 	if (g_index_memory.tiny)
-	{
-		ft_putstr("TINY : \n");
-		total += ft_show_memory(g_index_memory.tiny);
-	}
+		total += ft_show_memory(g_index_memory.tiny, "TINY :");
 	if (g_index_memory.small)
-	{
-		ft_putstr("SMALL : \n");
-		total += ft_show_memory(g_index_memory.small);
-	}
+		total += ft_show_memory(g_index_memory.small, "SMALL :");
 	if (g_index_memory.large)
-	{
-		ft_putstr("LARGE : \n");
-		total += ft_show_memory(g_index_memory.large);
-	}
+		total += ft_show_memory(g_index_memory.large, "LARGE :");
 	if (total)
 	{
 		ft_putstr("Total : ");
 		ft_putnbr(total);
 		ft_putstr(" octets\n");
 	}
+	pthread_mutex_unlock(&g_memory_mutex);
 }

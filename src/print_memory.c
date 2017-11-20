@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/malloc.h"
+#include "malloc.h"
 
 void			reverse_mem(char *str)
 {
@@ -55,7 +55,7 @@ void			number_assign_hexa_ll(char *str, size_t n)
 
 void			print_addr(void *ptr)
 {
-	char	buff[16];
+	char	buff[32];
 
 	number_assign_hexa_ll(buff, (size_t)ptr);
 	ft_putstr("0x");

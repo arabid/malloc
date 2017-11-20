@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/malloc.h"
+#include "malloc.h"
 
-t_index g_index_memory;
+t_index		g_index_memory;
 
 void			initialize_memory(t_memory *memory, size_t size, int id)
 {
@@ -61,7 +61,7 @@ void			*create_map(size_t size)
 	mod_size = size % getpagesize() == 0 ? size :\
 	(size / getpagesize() * getpagesize() + getpagesize());
 	ret = mmap(0, mod_size, PROT_READ | PROT_WRITE,\
-				MAP_ANON | MAP_PRIVATE, -1, 0);
+				MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
 	if (ret == MAP_FAILED)
 	{
 		return (NULL);
@@ -91,7 +91,7 @@ void			*ft_memory_return(t_identifier identifier, size_t size)
 		map = identifier.id == 1 ? &g_index_memory.tiny : &g_index_memory.small;
 		if (*map && (ret = ft_get_memory(*map, size, identifier, 1)))
 			return (ret);
-		ret = create_map((identifier.size + sizeof(t_memory)) * 100);
+		ret = create_map((identifier.size + sizeof(t_memory)) * NB_BY_MAP);
 	}
 	if (*map)
 		associate_new_map(*map, ret);

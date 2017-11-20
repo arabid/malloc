@@ -20,9 +20,10 @@ PATH_INC	= includes
 
 NAME		= libft_malloc_$(HOSTTYPE).so
 CFLAGS		= -Wall -Wextra -Werror
-DLFLAGS		= -lpthread -shared -fPIC
+DLFLAGS		= -shared -fPIC
 OBJECTS		= $(patsubst %.c, $(PATH_OBJ)/%.o, $(SRC))
-DEBUG		= -g -O0
+CC			= gcc
+
 .PHONY: all
 
 all: $(NAME)
@@ -38,10 +39,10 @@ $(PATH_OBJ)/%.o: $(addprefix $(PATH_SRC)/,%.c)
 
 clean:
 	@rm -f $(OBJECTS)
-	@echo Delete $(words $(OBJECTS)) object file
 
 fclean: clean
 	rm -f $(NAME)
+	rm -rf $(PATH_OBJ)
 	rm -f libft_malloc.so
 
 re: fclean $(NAME)

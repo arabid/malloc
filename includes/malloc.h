@@ -18,6 +18,7 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <pthread.h>
+# include <errno.h>
 # define TINY 1024
 # define SMALL 4096
 # define NB_BY_MAP 100
@@ -44,6 +45,8 @@ typedef struct		s_identifier
 	int				id;
 }					t_identifier;
 
+pthread_mutex_t		g_memory_mutex;
+
 t_identifier		ft_check_size(size_t size);
 void				initialize();
 void				*ft_memory_return(t_identifier identifier, size_t size);
@@ -56,5 +59,8 @@ void				ft_putstr(char const *s);
 void				ft_print_memory(t_memory *memory);
 void				ft_putnbr(size_t n);
 int					memory_check(void *ptr);
+void				*new_malloc(void *size);
+void				*new_free(void *ptr);
 void				print_addr(void *ptr);
+void				mutex_init(pthread_mutex_t *mutex);
 #endif
