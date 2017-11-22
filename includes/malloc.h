@@ -29,6 +29,7 @@ typedef struct		s_memory
 	int				free;
 	int				id;
 	void			*data;
+	size_t			history_size[1024];
 	struct s_memory	*next;
 }					t_memory;
 
@@ -38,6 +39,12 @@ typedef struct		s_index
 	t_memory		*small;
 	t_memory		*large;
 }					t_index;
+
+typedef	struct		s_history
+{
+	size_t			large_size[1024];
+	void			*large_address[1024];
+}					t_history;
 
 typedef struct		s_identifier
 {
@@ -53,14 +60,18 @@ void				*ft_memory_return(t_identifier identifier, size_t size);
 void				free(void *ptr);
 void				*malloc(size_t size);
 void				*realloc(void *ptr, size_t size);
+void				*calloc(size_t count, size_t size);
 void				show_alloc_mem();
+void				show_history_mem();
 size_t				ft_strlen(const char *str);
 void				ft_putstr(char const *s);
-void				ft_print_memory(t_memory *memory);
+void				ft_print_memory(void *beginning, void *end, size_t size);
 void				ft_putnbr(size_t n);
 int					memory_check(void *ptr);
 void				*new_malloc(void *size);
 void				*new_free(void *ptr);
 void				print_addr(void *ptr);
 void				mutex_init(pthread_mutex_t *mutex);
+void				add_history(t_memory *map);
+size_t				malloc_size(const void *ptr);
 #endif

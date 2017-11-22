@@ -12,39 +12,19 @@
 
 #include "malloc.h"
 
-void	initialize(void)
+void	*valloc(size_t size)
 {
-	static	int			toggle = 0;
-	extern t_index		g_index_memory;
-
-	if (toggle == 0)
-	{
-		g_index_memory.tiny = NULL;
-		g_index_memory.small = NULL;
-		g_index_memory.large = NULL;
-		pthread_mutex_init(&g_memory_mutex, NULL);
-		++toggle;
-	}
-}
-
-void	*malloc(size_t size)
-{
-	void			*ret;
 	t_identifier	info;
+	void			*ret;
 
-	initialize();
-	info = ft_check_size(size);
+	if (!size)
+		return (NULL);
+	info.size = size;
+	info.id = 3;
 	pthread_mutex_lock(&g_memory_mutex);
-	if (info.id != 0)
-	{
-		ret = ft_memory_return(info, size);
-	}
-	else
-		ret = MAP_FAILED;
+	ret = ft_memory_return(info, size);
 	pthread_mutex_unlock(&g_memory_mutex);
 	if (ret == MAP_FAILED)
-	{
 		return (NULL);
-	}
 	return (ret + sizeof(t_memory));
 }

@@ -13,6 +13,7 @@
 #include "malloc.h"
 
 t_index		g_index_memory;
+t_history	g_history;
 
 void			initialize_memory(t_memory *memory, size_t size, int id)
 {
@@ -32,6 +33,7 @@ void			*ft_get_memory(t_memory *memory, int size,\
 	{
 		if (memory->free)
 		{
+			add_history(memory);
 			memory->free = 0;
 			memory->size = size;
 			break ;

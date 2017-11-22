@@ -12,39 +12,12 @@
 
 #include "malloc.h"
 
-void	initialize(void)
+void	*reallocf(void *ptr, size_t size)
 {
-	static	int			toggle = 0;
-	extern t_index		g_index_memory;
+	void	*ret;
 
-	if (toggle == 0)
-	{
-		g_index_memory.tiny = NULL;
-		g_index_memory.small = NULL;
-		g_index_memory.large = NULL;
-		pthread_mutex_init(&g_memory_mutex, NULL);
-		++toggle;
-	}
-}
-
-void	*malloc(size_t size)
-{
-	void			*ret;
-	t_identifier	info;
-
-	initialize();
-	info = ft_check_size(size);
-	pthread_mutex_lock(&g_memory_mutex);
-	if (info.id != 0)
-	{
-		ret = ft_memory_return(info, size);
-	}
-	else
-		ret = MAP_FAILED;
-	pthread_mutex_unlock(&g_memory_mutex);
-	if (ret == MAP_FAILED)
-	{
-		return (NULL);
-	}
-	return (ret + sizeof(t_memory));
+	ret = realloc(ptr, size);
+	if (ret == NULL)
+		free(ptr);
+	return (ret);
 }

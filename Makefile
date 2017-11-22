@@ -9,10 +9,14 @@ SRC =	memory.c\
 		show_alloc_mem.c\
 		free.c\
 		realloc.c\
+		valloc.c\
+		reallocf.c\
+		calloc.c\
+		malloc_size.c\
 		print_memory.c\
 		ft_strlen.c\
 		ft_putstr.c\
-		ft_putnbr.c
+		ft_putnbr.c\
 
 PATH_OBJ	= obj
 PATH_SRC	= src

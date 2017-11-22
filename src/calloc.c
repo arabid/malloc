@@ -12,39 +12,28 @@
 
 #include "malloc.h"
 
-void	initialize(void)
+void	*ft_memset(void *b, int c, size_t len)
 {
-	static	int			toggle = 0;
-	extern t_index		g_index_memory;
+	size_t i;
 
-	if (toggle == 0)
+	i = 0;
+	while (i < len)
 	{
-		g_index_memory.tiny = NULL;
-		g_index_memory.small = NULL;
-		g_index_memory.large = NULL;
-		pthread_mutex_init(&g_memory_mutex, NULL);
-		++toggle;
+		((unsigned char*)b)[i] = (unsigned char)c;
+		i++;
 	}
+	return (b);
 }
 
-void	*malloc(size_t size)
+void	*calloc(size_t count, size_t size)
 {
-	void			*ret;
-	t_identifier	info;
+	void	*ret;
+	size_t	len;
 
-	initialize();
-	info = ft_check_size(size);
-	pthread_mutex_lock(&g_memory_mutex);
-	if (info.id != 0)
-	{
-		ret = ft_memory_return(info, size);
-	}
-	else
-		ret = MAP_FAILED;
-	pthread_mutex_unlock(&g_memory_mutex);
-	if (ret == MAP_FAILED)
-	{
+	len = count * size;
+	ret = malloc(len);
+	if (!ret)
 		return (NULL);
-	}
-	return (ret + sizeof(t_memory));
+	ret = ft_memset(ret, 0, len);
+	return (ret);
 }

@@ -62,12 +62,12 @@ void			print_addr(void *ptr)
 	ft_putstr(buff);
 }
 
-void			ft_print_memory(t_memory *memory)
+void			ft_print_memory(void *beginning, void *end, size_t size)
 {
-	print_addr((void *)memory + sizeof(t_memory));
+	print_addr(beginning);
 	ft_putstr(" - ");
-	print_addr((void *)memory + sizeof(t_memory) + memory->size);
+	print_addr(end);
 	ft_putstr(" : ");
-	ft_putnbr(memory->size);
+	ft_putnbr(size);
 	ft_putstr(" octets\n");
 }

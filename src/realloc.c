@@ -30,6 +30,7 @@ void			*ft_memcpy(void *dst, const void *src, size_t n)
 void			realloc_modif(t_memory **memory, size_t size,\
 				void **ret, void *ptr)
 {
+	add_history(*memory);
 	(*memory)->size = size;
 	*ret = ptr;
 	pthread_mutex_unlock(&g_memory_mutex);
@@ -42,10 +43,10 @@ void			*realloc(void *ptr, size_t size)
 	t_memory		*memory;
 
 	initialize();
-	if (!ptr)
+	if (!ptr || memory_check(ptr) == 0)
 		return (malloc(size));
-	if (!size || memory_check(ptr) == 0)
-		return (NULL); //CHANGE ?
+	if (!size)
+		size = TINY;
 	pthread_mutex_lock(&g_memory_mutex);
 	memory = ptr - sizeof(t_memory);
 	info_new = ft_check_size(size);
@@ -53,6 +54,8 @@ void			*realloc(void *ptr, size_t size)
 	{
 		pthread_mutex_unlock(&g_memory_mutex);
 		ret = malloc(size);
+		if (!ret)
+			return (NULL);
 		size = size >= memory->size ? memory->size : size;
 		ft_memcpy(ret, ptr, size);
 		free(ptr);
