@@ -64,17 +64,6 @@ int			memory_check(void *ptr)
 	return (0);
 }
 
-void		add_large_history(t_memory *memory)
-{
-	extern t_history	g_history;
-	int					i;
-
-	i = 0;
-	while (g_history.large_size[i] && i < 1023)
-		++i;
-	g_history.large_size[i] = memory->size;
-	g_history.large_address[i] = memory->data;
-}
 
 void		free(void *ptr)
 {
@@ -95,7 +84,7 @@ void		free(void *ptr)
 	memory->free = 1;
 	if (memory->id == 3)
 	{
-		add_large_history(memory);
+		add_history(memory);
 		unlink_memory(&g_index_memory.large, memory);
 		erase_map(memory, memory->size + sizeof(t_memory));
 	}

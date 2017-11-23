@@ -29,7 +29,6 @@ typedef struct		s_memory
 	int				free;
 	int				id;
 	void			*data;
-	size_t			history_size[1024];
 	struct s_memory	*next;
 }					t_memory;
 
@@ -42,8 +41,8 @@ typedef struct		s_index
 
 typedef	struct		s_history
 {
-	size_t			large_size[1024];
-	void			*large_address[1024];
+	size_t			size[4096];
+	void			*address[4096];
 }					t_history;
 
 typedef struct		s_identifier
