@@ -64,7 +64,6 @@ int			memory_check(void *ptr)
 	return (0);
 }
 
-
 void		free(void *ptr)
 {
 	extern t_index		g_index_memory;

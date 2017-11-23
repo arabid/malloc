@@ -12,7 +12,6 @@
 
 #include "malloc.h"
 
-
 void		add_history(t_memory *memory)
 {
 	extern t_history	g_history;
@@ -46,7 +45,6 @@ size_t		ft_show_memory(void *map, char *str)
 	}
 	return (total);
 }
-
 
 void		show_history_mem(void)
 {

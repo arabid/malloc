@@ -24,4 +24,3 @@ size_t	malloc_size(const void *ptr)
 		return (0);
 	return (memory->size);
 }
-	
