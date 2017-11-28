@@ -40,14 +40,14 @@ void		unlink_memory(t_memory **memory, t_memory *old)
 
 t_memory	*check_valid_memory(void *ptr, t_memory *map)
 {
-	pthread_mutex_lock(&g_memory_mutex);
+	extern pthread_mutex_t		g_memory_mutex;
+
 	while (map)
 	{
 		if (ptr == map->data)
 			break ;
 		map = map->next;
 	}
-	pthread_mutex_unlock(&g_memory_mutex);
 	return (map);
 }
 
@@ -64,22 +64,16 @@ int			memory_check(void *ptr)
 	return (0);
 }
 
-void		free(void *ptr)
+void		nothread_free(void *ptr)
 {
 	extern t_index		g_index_memory;
 	t_memory			*memory;
 
-	initialize();
 	if (!ptr)
-	{
 		return ;
-	}
 	memory = (t_memory *)(ptr - sizeof(t_memory));
 	if (memory_check(ptr) == 0)
-	{
 		return ;
-	}
-	pthread_mutex_lock(&g_memory_mutex);
 	memory->free = 1;
 	if (memory->id == 3)
 	{
@@ -87,5 +81,15 @@ void		free(void *ptr)
 		unlink_memory(&g_index_memory.large, memory);
 		erase_map(memory, memory->size + sizeof(t_memory));
 	}
+}
+
+void		free(void *ptr)
+{
+	extern pthread_mutex_t		g_memory_mutex;
+
+	pthread_mutex_lock(&g_memory_mutex);
+	nothread_free(ptr);
 	pthread_mutex_unlock(&g_memory_mutex);
 }
+
+

@@ -51,10 +51,7 @@ typedef struct		s_identifier
 	int				id;
 }					t_identifier;
 
-pthread_mutex_t		g_memory_mutex;
-
 t_identifier		ft_check_size(size_t size);
-void				initialize();
 void				*ft_memory_return(t_identifier identifier, size_t size);
 void				free(void *ptr);
 void				*malloc(size_t size);
@@ -73,4 +70,8 @@ void				print_addr(void *ptr);
 void				mutex_init(pthread_mutex_t *mutex);
 void				add_history(t_memory *map);
 size_t				malloc_size(const void *ptr);
+void				nothread_free(void *ptr);
+void				*nothread_malloc(size_t size);
+void				*nothread_realloc(void *ptr, size_t size);
+
 #endif

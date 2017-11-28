@@ -12,8 +12,9 @@
 
 #include "malloc.h"
 
-t_index		g_index_memory;
-t_history	g_history;
+t_index				g_index_memory = {NULL, NULL, NULL};
+t_history			g_history = {{0}, {0}};
+pthread_mutex_t		g_memory_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 void			initialize_memory(t_memory *memory, size_t size, int id)
 {

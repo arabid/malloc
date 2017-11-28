@@ -23,7 +23,7 @@ PATH_SRC	= src
 PATH_INC	= includes
 
 NAME		= libft_malloc_$(HOSTTYPE).so
-CFLAGS		= -Wall -Wextra -Werror
+CFLAGS		= -W -Wall -Wextra -Werror
 DLFLAGS		= -shared -fPIC
 OBJECTS		= $(patsubst %.c, $(PATH_OBJ)/%.o, $(SRC))
 CC			= gcc
@@ -39,7 +39,7 @@ $(NAME): $(OBJECTS)
 
 $(PATH_OBJ)/%.o: $(addprefix $(PATH_SRC)/,%.c)
 	@mkdir -p $(PATH_OBJ)
-	$(CC) -c -o $@ $(CFLAGS) $^ -O0 -g  -I $(PATH_INC)/
+	$(CC) -c -o $@ $(CFLAGS) $^ -O0 -g -I $(PATH_INC)/
 
 clean:
 	@rm -f $(OBJECTS)

@@ -25,15 +25,28 @@ void	*ft_memset(void *b, int c, size_t len)
 	return (b);
 }
 
-void	*calloc(size_t count, size_t size)
+void	*nothread_calloc(size_t count, size_t size)
 {
 	void	*ret;
 	size_t	len;
 
 	len = count * size;
-	ret = malloc(len);
+	ret = nothread_malloc(len);
 	if (!ret)
 		return (NULL);
 	ret = ft_memset(ret, 0, len);
 	return (ret);
+}
+
+void	*calloc(size_t count, size_t size)
+{
+	void	*ret;
+	extern pthread_mutex_t		g_memory_mutex;
+
+
+	pthread_mutex_lock(&g_memory_mutex);
+	ret = nothread_calloc(count, size);
+	pthread_mutex_unlock(&g_memory_mutex);
+	return (ret);
+
 }

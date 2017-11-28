@@ -12,12 +12,24 @@
 
 #include "malloc.h"
 
-void	*reallocf(void *ptr, size_t size)
+void	*nothread_reallocf(void *ptr, size_t size)
 {
 	void	*ret;
 
-	ret = realloc(ptr, size);
+	ret = nothread_realloc(ptr, size);
 	if (ret == NULL)
-		free(ptr);
+		nothread_free(ptr);
 	return (ret);
 }
+
+void	*reallocf(void *ptr, size_t size)
+{
+	void	*ret;
+	extern pthread_mutex_t		g_memory_mutex;
+
+	pthread_mutex_lock(&g_memory_mutex);
+	ret = nothread_reallocf(ptr, size);
+	pthread_mutex_unlock(&g_memory_mutex);
+	return (ret);
+}
+

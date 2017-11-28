@@ -68,10 +68,10 @@ void		show_history_mem(void)
 void		show_alloc_mem(void)
 {
 	extern t_index	g_index_memory;
+	extern pthread_mutex_t		g_memory_mutex;
 	size_t			total;
 
 	total = 0;
-	initialize();
 	pthread_mutex_lock(&g_memory_mutex);
 	if (g_index_memory.tiny)
 		total += ft_show_memory(g_index_memory.tiny, "TINY :");

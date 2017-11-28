@@ -16,7 +16,6 @@ size_t	malloc_size(const void *ptr)
 {
 	t_memory	*memory;
 
-	initialize();
 	if (!ptr)
 		return (0);
 	memory = (t_memory *)(ptr - sizeof(t_memory));

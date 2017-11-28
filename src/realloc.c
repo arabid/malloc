@@ -17,50 +17,53 @@ void			*ft_memcpy(void *dst, const void *src, size_t n)
 	size_t i;
 
 	i = 0;
-	pthread_mutex_lock(&g_memory_mutex);
 	while (i < n)
 	{
 		((char *)dst)[i] = ((char *)src)[i];
 		i++;
 	}
-	pthread_mutex_unlock(&g_memory_mutex);
 	return (dst);
 }
 
-void			realloc_modif(t_memory **memory, size_t size,\
-				void **ret, void *ptr)
-{
-	add_history(*memory);
-	(*memory)->size = size;
-	*ret = ptr;
-	pthread_mutex_unlock(&g_memory_mutex);
-}
-
-void			*realloc(void *ptr, size_t size)
+void			*nothread_realloc(void *ptr, size_t size)
 {
 	void			*ret;
 	t_identifier	info_new;
 	t_memory		*memory;
 
-	initialize();
-	if (!ptr || memory_check(ptr) == 0)
-		return (malloc(size));
+	if (!ptr)
+		return (nothread_malloc(size));
 	if (!size)
 		size = TINY;
-	pthread_mutex_lock(&g_memory_mutex);
+	if (memory_check(ptr) == 0)
+		return (NULL);
 	memory = ptr - sizeof(t_memory);
 	info_new = ft_check_size(size);
 	if (info_new.id == 3 || info_new.id != memory->id)
 	{
-		pthread_mutex_unlock(&g_memory_mutex);
-		ret = malloc(size);
+		ret = nothread_malloc(size);
 		if (!ret)
 			return (NULL);
 		size = size >= memory->size ? memory->size : size;
 		ft_memcpy(ret, ptr, size);
-		free(ptr);
+		nothread_free(ptr);
 	}
 	else
-		realloc_modif(&memory, size, &ret, ptr);
+	{
+		add_history(memory);
+		memory->size = size;
+		ret = ptr;
+	}
+	return (ret);
+}
+
+void			*realloc(void *ptr, size_t size)
+{
+	void	*ret;
+	extern pthread_mutex_t		g_memory_mutex;
+
+	pthread_mutex_lock(&g_memory_mutex);
+	ret = nothread_realloc(ptr, size);
+	pthread_mutex_unlock(&g_memory_mutex);
 	return (ret);
 }
