@@ -12,28 +12,28 @@
 
 #include "malloc.h"
 
-void	*nothread_malloc(size_t size)
+t_memory	*check_valid_memory(void *ptr, t_memory *map)
 {
-	void						*ret;
-	t_identifier				info;
-
-	info = ft_check_size(size);
-	if (info.id != 0)
-		ret = ft_memory_return(info, size);
-	else
-		ret = MAP_FAILED;
-	if (ret == MAP_FAILED)
-		return (NULL);
-	return (ret + sizeof(t_memory));
-}
-
-void	*malloc(size_t size)
-{
-	void						*ptr;
 	extern pthread_mutex_t		g_memory_mutex;
 
-	pthread_mutex_lock(&g_memory_mutex);
-	ptr = nothread_malloc(size);
-	pthread_mutex_unlock(&g_memory_mutex);
-	return (ptr);
+	while (map)
+	{
+		if (ptr == map->data)
+			break ;
+		map = map->next;
+	}
+	return (map);
+}
+
+int			memory_check(void *ptr)
+{
+	extern t_index		g_index_memory;
+
+	if (check_valid_memory(ptr, g_index_memory.tiny))
+		return (1);
+	if (check_valid_memory(ptr, g_index_memory.small))
+		return (1);
+	if (check_valid_memory(ptr, g_index_memory.large))
+		return (1);
+	return (0);
 }

@@ -24,9 +24,7 @@ t_identifier	ft_check_size(size_t size)
 {
 	t_identifier	identifier;
 
-	if (!size)
-		return (*initialize_identifier(&identifier, 0, 0));
-	else if (size <= TINY)
+	if (!size || size <= TINY)
 		return (*initialize_identifier(&identifier, 1, TINY));
 	else if (size > SMALL)
 		return (*initialize_identifier(&identifier, 3, size));

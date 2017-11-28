@@ -24,7 +24,7 @@ void	*nothread_reallocf(void *ptr, size_t size)
 
 void	*reallocf(void *ptr, size_t size)
 {
-	void	*ret;
+	void						*ret;
 	extern pthread_mutex_t		g_memory_mutex;
 
 	pthread_mutex_lock(&g_memory_mutex);
@@ -32,4 +32,3 @@ void	*reallocf(void *ptr, size_t size)
 	pthread_mutex_unlock(&g_memory_mutex);
 	return (ret);
 }
-

@@ -25,8 +25,8 @@ void	*nothread_valloc(size_t size)
 	if (ret == MAP_FAILED)
 		return (NULL);
 	return (ret + sizeof(t_memory));
-
 }
+
 void	*valloc(size_t size)
 {
 	void						*ret;

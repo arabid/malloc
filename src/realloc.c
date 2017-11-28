@@ -25,6 +25,14 @@ void			*ft_memcpy(void *dst, const void *src, size_t n)
 	return (dst);
 }
 
+void			realloc_second_part(t_memory **memory, size_t size,\
+				void *ptr, void **ret)
+{
+	add_history(*memory);
+	(*memory)->size = size;
+	*ret = ptr;
+}
+
 void			*nothread_realloc(void *ptr, size_t size)
 {
 	void			*ret;
@@ -49,17 +57,13 @@ void			*nothread_realloc(void *ptr, size_t size)
 		nothread_free(ptr);
 	}
 	else
-	{
-		add_history(memory);
-		memory->size = size;
-		ret = ptr;
-	}
+		realloc_second_part(&memory, size, ptr, &ret);
 	return (ret);
 }
 
 void			*realloc(void *ptr, size_t size)
 {
-	void	*ret;
+	void						*ret;
 	extern pthread_mutex_t		g_memory_mutex;
 
 	pthread_mutex_lock(&g_memory_mutex);

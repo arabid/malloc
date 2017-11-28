@@ -14,6 +14,7 @@ SRC =	memory.c\
 		calloc.c\
 		malloc_size.c\
 		print_memory.c\
+		check_memory.c\
 		ft_strlen.c\
 		ft_putstr.c\
 		ft_putnbr.c\
@@ -23,8 +24,8 @@ PATH_SRC	= src
 PATH_INC	= includes
 
 NAME		= libft_malloc_$(HOSTTYPE).so
-CFLAGS		= -W -Wall -Wextra -Werror
-DLFLAGS		= -shared -fPIC
+CFLAGS		= -fPIC -W -Wall -Wextra -Werror
+DLFLAGS		= -shared
 OBJECTS		= $(patsubst %.c, $(PATH_OBJ)/%.o, $(SRC))
 CC			= gcc
 

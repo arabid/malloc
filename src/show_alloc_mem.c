@@ -43,6 +43,7 @@ size_t		ft_show_memory(void *map, char *str)
 		}
 		memory = memory->next;
 	}
+	ft_putstr("\033[0m");
 	return (total);
 }
 
@@ -67,18 +68,18 @@ void		show_history_mem(void)
 
 void		show_alloc_mem(void)
 {
-	extern t_index	g_index_memory;
+	extern t_index				g_index_memory;
 	extern pthread_mutex_t		g_memory_mutex;
-	size_t			total;
+	size_t						total;
 
 	total = 0;
 	pthread_mutex_lock(&g_memory_mutex);
 	if (g_index_memory.tiny)
-		total += ft_show_memory(g_index_memory.tiny, "TINY :");
+		total += ft_show_memory(g_index_memory.tiny, "\033[32mTINY :");
 	if (g_index_memory.small)
-		total += ft_show_memory(g_index_memory.small, "SMALL :");
+		total += ft_show_memory(g_index_memory.small, "\033[33mSMALL :");
 	if (g_index_memory.large)
-		total += ft_show_memory(g_index_memory.large, "LARGE :");
+		total += ft_show_memory(g_index_memory.large, "\033[91mLARGE :");
 	if (total)
 	{
 		ft_putstr("Total : ");
