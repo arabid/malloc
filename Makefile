@@ -29,7 +29,7 @@ DLFLAGS		= -shared
 OBJECTS		= $(patsubst %.c, $(PATH_OBJ)/%.o, $(SRC))
 CC			= gcc
 
-.PHONY: all
+.PHONY: all re clean fclean
 
 all: $(NAME)
 

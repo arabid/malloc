@@ -32,6 +32,7 @@ void	*malloc(size_t size)
 	void						*ptr;
 	extern pthread_mutex_t		g_memory_mutex;
 
+	ft_putstr("test\n");
 	pthread_mutex_lock(&g_memory_mutex);
 	ptr = nothread_malloc(size);
 	pthread_mutex_unlock(&g_memory_mutex);
