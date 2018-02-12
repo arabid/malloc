@@ -6,7 +6,7 @@
 /*   By: darabi <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/02/22 19:39:50 by darabi            #+#    #+#             */
-/*   Updated: 2016/02/22 19:41:02 by darabi           ###   ########.fr       */
+/*   Updated: 2018/02/12 10:21:43 by darabi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ void	*malloc(size_t size)
 	void						*ptr;
 	extern pthread_mutex_t		g_memory_mutex;
 
-	ft_putstr("test\n");
 	pthread_mutex_lock(&g_memory_mutex);
 	ptr = nothread_malloc(size);
 	pthread_mutex_unlock(&g_memory_mutex);
